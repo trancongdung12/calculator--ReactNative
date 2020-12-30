@@ -1,18 +1,64 @@
 import React, { Component,useState } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 
 const App = () => {
-  const [count, setCount] = useState(1);
-  const changeValue = ()=>{
-    setCount(9);
+  const [count, setCount] = useState(0);
+  const changeValue = (x)=>{
+    
+    let output = count;
+    
+    if(output ==0){
+      output = "";
+      if( x == "/")
+      {
+        output = 0;
+      }
+      else{
+        output = output + x; 
+      }
+      
+    }else{
+      
+        if(count.length>1){
+          let endChar = output.slice(-1);  
+          if(endChar == "+" || endChar == "-" || endChar == "/"){
+            if(x == "+" || x == "-" || x == "/"){
+              alert("Biểu thức sai");
+              removeValue();
+            }else{
+              output = output + x;  
+            }
+          }else{
+          output = output + x;  
+          }
+        }else{
+          output = output + x;  
+        }   
+    }
+      setCount(output);
+    
   }
   const removeValue = ()=>{
      setCount(0);
   }
+  const callResult = () => {
+    if(count.length>1){
+        let endChar = count.slice(-1);  
+      if(endChar == "+" || endChar == "-" || endChar == "/"){
+        alert("Biểu thức sai");
+        removeValue();
+      }else{
+        setCount(eval(count));
+      }
+    }
+    
+   
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.contentResult}>
-          <Text style={styles.textResult}>{count}</Text>
+        <Text style={styles.textResult}>{count}</Text>
       </View>
       <View style={styles.clearView}>
         <TouchableOpacity 
@@ -23,7 +69,10 @@ const App = () => {
             clear
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.divideButton}>
+        <TouchableOpacity 
+        style={styles.divideButton}
+        onPress={()=>changeValue('/')}
+        >
           <Text style={styles.divideText}>/</Text>
         </TouchableOpacity>
       </View>
@@ -31,45 +80,77 @@ const App = () => {
           <TouchableOpacity 
           style={styles.numberButton}
           
-          onPress={changeValue}
+          onPress={()=>changeValue('9')}
           >
             <Text style={styles.numberText}>9</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.numberButton}>
+          <TouchableOpacity style={styles.numberButton}
+          onPress={()=>changeValue('8')}
+          >
             <Text style={styles.numberText}>8</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.numberButton}>
+          <TouchableOpacity 
+          style={styles.numberButton}
+          onPress={()=>changeValue('7')}
+          >
             <Text style={styles.numberText}>7</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.divideButton}>
+          <TouchableOpacity 
+          style={styles.divideButton}
+          onPress={()=>changeValue('-')}
+          >
             <Text style={styles.divideText}>-</Text>
           </TouchableOpacity>
       </View>
       <View style={styles.numberView}>
-          <TouchableOpacity style={styles.numberButton}>
+          <TouchableOpacity 
+          style={styles.numberButton}
+          onPress={()=>changeValue('6')}
+          >
             <Text style={styles.numberText}>6</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.numberButton}>
+          <TouchableOpacity 
+          style={styles.numberButton}
+          onPress={()=>changeValue('5')}
+          >
             <Text style={styles.numberText}>5</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.numberButton}>
+          <TouchableOpacity 
+          style={styles.numberButton}
+          onPress={()=>changeValue('4')}
+          >
             <Text style={styles.numberText}>4</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.divideButton}>
+          <TouchableOpacity 
+          style={styles.divideButton}
+          onPress={()=>changeValue('+')}
+          >
             <Text style={styles.divideText}>+</Text>
           </TouchableOpacity>
       </View>
       <View style={styles.numberView}>
-          <TouchableOpacity style={styles.numberButton}>
+          <TouchableOpacity 
+          style={styles.numberButton}
+          onPress={()=>changeValue('3')}
+          >
             <Text style={styles.numberText}>3</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.numberButton}>
+          <TouchableOpacity 
+          style={styles.numberButton}
+          onPress={()=>changeValue('2')}
+          >
             <Text style={styles.numberText}>2</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.numberButton}>
+          <TouchableOpacity 
+          style={styles.numberButton}
+          onPress={()=>changeValue('1')}
+          >
             <Text style={styles.numberText}>1</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.divideButton}>
+          <TouchableOpacity 
+          style={styles.divideButton}
+          onPress = { ()=>callResult()}
+          >
             <Text style={styles.divideText}>=</Text>
           </TouchableOpacity>
       </View>
@@ -141,6 +222,12 @@ const App = () => {
     color:"black",
     fontSize:70,
     alignSelf:"center"
+  },
+  wrongResult:{
+    fontSize:40,
+    color:"red"
+    ,marginTop:80,
+    marginRight:50
   }
  });
 export default App;
