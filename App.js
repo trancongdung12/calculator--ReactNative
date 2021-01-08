@@ -1,234 +1,107 @@
-import React, { Component,useState } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+// In index.js of a new project
+import React from 'react';
+import { View, Button, StyleSheet } from 'react-native';
+import { Navigation } from 'react-native-navigation';
+import TodoList from './src/TodoList';
+import Calculator from './src/Calculator';
+import SignUp from './src/SignUp';
+import Enouvo from './src/EnouvoEvent';
+// Home screen declaration
 
-const App = () => {
-  const [count, setCount] = useState(0);
-  const changeValue = (x)=>{
-    
-    let output = count;
-    
-    if(output ==0){
-      output = "";
-      if( x == "/")
-      {
-        output = 0;
-      }
-      else{
-        output = output + x; 
-      }
-      
-    }else{
-      
-        if(count.length>1){
-          let endChar = output.slice(-1);  
-          if(endChar == "+" || endChar == "-" || endChar == "/"){
-            if(x == "+" || x == "-" || x == "/"){
-              alert("Biểu thức sai");
-              removeValue();
-            }else{
-              output = output + x;  
-            }
-          }else{
-          output = output + x;  
-          }
-        }else{
-          output = output + x;  
-        }   
-    }
-      setCount(output);
-    
-  }
-  const removeValue = ()=>{
-     setCount(0);
-  }
-  const callResult = () => {
-    if(count.length>1){
-        let endChar = count.slice(-1);  
-      if(endChar == "+" || endChar == "-" || endChar == "/"){
-        alert("Biểu thức sai");
-        removeValue();
-      }else{
-        setCount(eval(count));
-      }
-    }
-    
-   
-  }
-
+const ButtonNavigation = (props) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.contentResult}>
-        <Text style={styles.textResult}>{count}</Text>
-      </View>
-      <View style={styles.clearView}>
-        <TouchableOpacity 
-        style={styles.clearButton}
-        onPress={removeValue}
-        >
-          <Text style={styles.clearText}>
-            clear
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-        style={styles.divideButton}
-        onPress={()=>changeValue('/')}
-        >
-          <Text style={styles.divideText}>/</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.numberView}>
-          <TouchableOpacity 
-          style={styles.numberButton}
-          
-          onPress={()=>changeValue('9')}
-          >
-            <Text style={styles.numberText}>9</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberButton}
-          onPress={()=>changeValue('8')}
-          >
-            <Text style={styles.numberText}>8</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-          style={styles.numberButton}
-          onPress={()=>changeValue('7')}
-          >
-            <Text style={styles.numberText}>7</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-          style={styles.divideButton}
-          onPress={()=>changeValue('-')}
-          >
-            <Text style={styles.divideText}>-</Text>
-          </TouchableOpacity>
-      </View>
-      <View style={styles.numberView}>
-          <TouchableOpacity 
-          style={styles.numberButton}
-          onPress={()=>changeValue('6')}
-          >
-            <Text style={styles.numberText}>6</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-          style={styles.numberButton}
-          onPress={()=>changeValue('5')}
-          >
-            <Text style={styles.numberText}>5</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-          style={styles.numberButton}
-          onPress={()=>changeValue('4')}
-          >
-            <Text style={styles.numberText}>4</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-          style={styles.divideButton}
-          onPress={()=>changeValue('+')}
-          >
-            <Text style={styles.divideText}>+</Text>
-          </TouchableOpacity>
-      </View>
-      <View style={styles.numberView}>
-          <TouchableOpacity 
-          style={styles.numberButton}
-          onPress={()=>changeValue('3')}
-          >
-            <Text style={styles.numberText}>3</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-          style={styles.numberButton}
-          onPress={()=>changeValue('2')}
-          >
-            <Text style={styles.numberText}>2</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-          style={styles.numberButton}
-          onPress={()=>changeValue('1')}
-          >
-            <Text style={styles.numberText}>1</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-          style={styles.divideButton}
-          onPress = { ()=>callResult()}
-          >
-            <Text style={styles.divideText}>=</Text>
-          </TouchableOpacity>
-      </View>
+    <View style={styles.button}>
+      <Button
+        title={props.title}
+        color={props.color}
+        onPress={() => props.RedirectNavigation(props.nameNavigation)}
+      />
     </View>
-  )
+  );
 };
- const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    backgroundColor:"white"
-  },
-  contentResult:{
-    height:233,
-    backgroundColor:"#433336",
-    borderColor:"#920F29",
-    borderWidth:2
-  },
-  textResult:{
-    marginTop:60,
-    color:"white",
-    fontSize:70,
-    alignSelf:"flex-end",
-    marginRight:10
-  },
-  clearView:{
-    borderColor:"#920F29",
-    borderWidth:1,
-    flexDirection:"row"
-  },
-  clearButton:{
-    height:125,
-    borderColor:"#920F29",
-    borderWidth:1,
-    backgroundColor:"white",
-    width:"75%",
-    
-  },
-  clearText:{
-    fontSize:50,
-    alignSelf:"center",
-    marginTop:30,
-    color:"#515251"
-  },
-  divideButton:{
-    height:125,
-    width:"25%",
-    backgroundColor:"#F2274F",
-    borderColor:"#920F29",
-    borderWidth:2,
-  },
-  divideText:{
-    marginTop:13,
-    color:"white",
-    fontSize:70,
-    alignSelf:"center"
-  },
-  numberView:{
-    flexDirection:"row"
-  },
-  numberButton:{
-    height:125,
-    width:"25%",
-    backgroundColor:"white",
-    borderColor:"#920F29",
-    borderWidth:2,
-  },
-  numberText:{
-    marginTop:13,
-    color:"black",
-    fontSize:70,
-    alignSelf:"center"
-  },
-  wrongResult:{
-    fontSize:40,
-    color:"red"
-    ,marginTop:80,
-    marginRight:50
-  }
- });
-export default App;
 
+const HomeScreen = (props) => {
+  const onRedirectNavigation = (nameNavigation) => {
+    Navigation.push(props.componentId, {
+      component: {
+        name: nameNavigation,
+      },
+    });
+  };
+  return (
+    <View style={styles.root}>
+      <ButtonNavigation
+        title="Push ToList Screen"
+        color="#33a5c6"
+        nameNavigation="ToList"
+        RedirectNavigation={onRedirectNavigation}
+      />
+      <ButtonNavigation
+        title="Push Calculator Screen"
+        color="#df7c3f"
+        nameNavigation="Calculator"
+        RedirectNavigation={onRedirectNavigation}
+      />
+      <ButtonNavigation
+        title="Push SignUp Screen"
+        color="#b726b6"
+        nameNavigation="SignUp"
+        RedirectNavigation={onRedirectNavigation}
+      />
+      <ButtonNavigation
+        title="Push Enouvo Event Screen"
+        color="#f2d43d"
+        nameNavigation="Enouvo"
+        RedirectNavigation={onRedirectNavigation}
+      />
+    </View>
+  );
+};
+HomeScreen.options = {
+  topBar: {
+    title: {
+      text: 'Home',
+      color: 'white',
+    },
+    background: {
+      color: '#f56674',
+    },
+  },
+};
+Navigation.registerComponent('Home', () => HomeScreen);
+Navigation.registerComponent('ToList', () => TodoList);
+Navigation.registerComponent('Calculator', () => Calculator);
+Navigation.registerComponent('SignUp', () => SignUp);
+Navigation.registerComponent('Enouvo', () => Enouvo);
+Navigation.events().registerAppLaunchedListener(async () => {
+  Navigation.setRoot({
+    root: {
+      stack: {
+        children: [
+          {
+            component: {
+              name: 'Home',
+            },
+          },
+        ],
+        options: {
+          topBar: {
+            visible: false,
+            height: 0,
+          },
+        },
+      },
+    },
+  });
+});
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: 'whitesmoke',
+    padding: 20,
+  },
+  button: {
+    marginBottom: 20,
+  },
+});
