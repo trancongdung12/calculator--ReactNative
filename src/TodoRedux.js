@@ -6,26 +6,45 @@ import InputTodo from '../components/TodoRedux/InputTodo';
 import ItemTodo from '../components/TodoRedux/ItemTodo';
 
 const todoState = {
-  todo: [],
+  todo: [{
+    id:0,
+    text:"abc",
+    isSelect: false,
+  }],
 };
-var nextId = 0;
-const reducer = (state = todoState, action) => {
+var nextId = 1;
+const reducer = (state = [], action) => {
+  let todos = state.todo;
   switch (action.type) {
     case 'SELECT_TODO':
-      return state.map((todo) => todo.id === action.id && { ...todo, isSelect: !todo.isSelect });
+      console.log(state);
+      return state.map((todo) => todo.id === action.id ? { ...todo, isSelect: !todo.isSelect }:todo);
     case 'ADD_TODO':
+      console.log(state);
       return [
         ...state,
         {
-          id: nextId++,
-          text: action.text,
-          isSelect: false,
-        },
+        id:nextId++,
+        text:action.string,
+        isSelect: false,
+        }
+        
       ];
-    default:
+     
+      // return [
+      //   ...state,
+      //   {
+      //     id: nextId++,
+      //     text: action.text,
+      //     isSelect: false,
+      //   },
+      // ];
+      default:
       return state;
-  }
+     
 };
+  }
+  
 const store = createStore(reducer);
 const TodoRedux = () => {
   return (

@@ -6,6 +6,7 @@ const InputTodo = (props) => {
   const [text, setText] = useState('');
   const addTodo = (string) => {
     props.dispatch({ type: 'ADD_TODO', string });
+    setText("");
   };
   return (
     <View style={{ flexDirection: 'row', paddingHorizontal:40 }}>
