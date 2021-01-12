@@ -3,6 +3,7 @@ import React from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import TodoList from './src/TodoList';
+import TodoRedux from './src/TodoRedux';
 import Calculator from './src/Calculator';
 import SignUp from './src/SignUp';
 import Enouvo from './src/EnouvoEvent';
@@ -34,6 +35,12 @@ const HomeScreen = (props) => {
         title="Push ToList Screen"
         color="#33a5c6"
         nameNavigation="ToList"
+        RedirectNavigation={onRedirectNavigation}
+      />
+      <ButtonNavigation
+        title="Push ToList Redux Screen"
+        color="green"
+        nameNavigation="ToListRedux"
         RedirectNavigation={onRedirectNavigation}
       />
       <ButtonNavigation
@@ -70,6 +77,7 @@ HomeScreen.options = {
 };
 Navigation.registerComponent('Home', () => HomeScreen);
 Navigation.registerComponent('ToList', () => TodoList);
+Navigation.registerComponent('ToListRedux', () => TodoRedux);
 Navigation.registerComponent('Calculator', () => Calculator);
 Navigation.registerComponent('SignUp', () => SignUp);
 Navigation.registerComponent('Enouvo', () => Enouvo);

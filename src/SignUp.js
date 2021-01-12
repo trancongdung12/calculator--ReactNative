@@ -1,27 +1,90 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import closeImg from '../assets/close.png';
 import visibility from '../assets/visibility.png';
 import witness from '../assets/witness.png';
 import ItemInput from '../components/SignUp/ItemInput';
 import { Navigation } from 'react-native-navigation';
 import Login from './Login';
-
+import axios from 'react-native-axios';
 const SignUp = (props) => {
-  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [comfirmPassword, setComfirmPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const showMessage = () => {
-    // eslint-disable-next-line no-alert
-    alert(name);
+  const onCheckPasswordValid = () => {
+    if (password === confirmPassword) {
+      return true;
+    } else {
+      return false;
+    }
   };
-  const onChange = (text) => {
-    setName(text);
+  const onHandleRegister = () => {
+    if (onCheckPasswordValid()) {
+      setIsLoading(true);
+      let url = 'https://proxibox-pharma-api-staging.enouvo.com/api/v1/auth/register';
+      let data = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        phone: phone,
+        birthDay: '2021-01-11',
+      };
+
+      axios
+        .post(url, data, {
+          headers: {
+            'Content-type': 'application/json',
+          },
+        })
+        .then(function (response) {
+          console.log(response);
+          console.log(response.status);
+          setIsLoading(false);
+          // if (response.status === 200) {
+          //   RedirectHomePage();
+          // }
+        })
+        .catch(function (error) {
+          setIsLoading(false);
+          Alert.alert('Error', error.response.data.messageCode);
+        });
+    } else {
+      Alert.alert('Error', 'Password not match');
+    }
+  };
+  const onChangeLastName = (text) => {
+    setLastName(text);
+  };
+  const onChangeFirstName = (text) => {
+    setFirstName(text);
+  };
+  const onChangeEmail = (text) => {
+    setEmail(text);
+  };
+  const onChangePhone = (text) => {
+    setPhone(text);
+  };
+  const onChangePassword = (text) => {
+    setPassword(text);
+  };
+  const onChangeConfirmPassword = (text) => {
+    setConfirmPassword(text);
   };
   const onClose = () => {
     Navigation.pop(props.componentId);
@@ -34,17 +97,34 @@ const SignUp = (props) => {
         </TouchableOpacity>
         <Text style={styles.title}>Đăng ký</Text>
       </View>
-      <ItemInput title="Tên người dùng*" value={name} onChange={onChange} />
-      <ItemInput title="Email*" />
-      <ItemInput title="Số điện thoại*" />
-      <ItemInput title="Tên tài khoản*" />
-      <ItemInput title="Mật khẩu*" imageClose={visibility} imageOpen={witness} isPass={true} />
+      <ItemInput title="Họ*" value={lastName} onChange={onChangeLastName} />
+      <ItemInput title="Tên*" value={firstName} onChange={onChangeFirstName} />
+      <ItemInput title="Email*" value={email} onChange={onChangeEmail} />
+      {isLoading && (
+        <ActivityIndicator
+          style={{ position: 'absolute', top: 300, left: 150 }}
+          size="large"
+          color="#25969E"
+        />
+      )}
+      <ItemInput title="Số điện thoại*" value={phone} onChange={onChangePhone} />
+      <ItemInput
+        title="Mật khẩu*"
+        imageClose={visibility}
+        imageOpen={witness}
+        isPass={true}
+        value={password}
+        onChange={onChangePassword}
+      />
       <ItemInput
         title="Xác nhân mật khẩu*"
         imageClose={visibility}
         imageOpen={witness}
         isPass={true}
+        value={confirmPassword}
+        onChange={onChangeConfirmPassword}
       />
+
       <View style={styles.layoutButton}>
         <TouchableOpacity
           style={styles.loginButton}
@@ -58,7 +138,7 @@ const SignUp = (props) => {
         >
           <Text style={styles.textLogin}>Đăng nhập</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.signUpButton} onPress={() => showMessage()}>
+        <TouchableOpacity style={styles.signUpButton} onPress={onHandleRegister}>
           <Text style={styles.textSignUp}>Đăng ký</Text>
         </TouchableOpacity>
       </View>
@@ -130,6 +210,12 @@ Navigation.events().registerAppLaunchedListener(async () => {
           {
             component: {
               name: 'SignUp',
+              options: {
+                topBar: {
+                  height: 0,
+                  visible: false,
+                },
+              },
             },
           },
         ],

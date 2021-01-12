@@ -7,7 +7,11 @@ const ItemInput = (props) => {
   return props.isPass ? (
     <View style={styles.layoutInput}>
       <Text style={styles.titleInput}>{props.title}</Text>
-      <TextInput secureTextEntry={isShowPass} style={styles.textInput} />
+      <TextInput
+        onChangeText={(text) => props.onChange(text)}
+        secureTextEntry={isShowPass}
+        style={styles.textInput}
+      />
       <TouchableOpacity
         style={styles.showPassword}
         onPress={() => {
@@ -35,7 +39,7 @@ const styles = StyleSheet.create({
   titleInput: {
     color: 'gray',
     fontSize: 15,
-    marginBottom: 5,
+    marginBottom: 10,
   },
   textInput: {
     height: 45,
@@ -45,7 +49,7 @@ const styles = StyleSheet.create({
   showPassword: {
     position: 'absolute',
     right: 10,
-    top: 38,
+    top: 42,
   },
 });
 

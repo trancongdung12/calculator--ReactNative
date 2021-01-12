@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import CountApp from '../components/Redux/CountApp';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import logger from 'redux-logger'
+import logger from 'redux-logger';
 const initSate = {
   count: 0,
 };

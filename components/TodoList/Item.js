@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   layoutItem: {
     flexDirection: 'row',
     marginTop: 15,
-    width: 350,
+    width: 320,
     borderWidth: 1,
     borderColor: '#dddddd',
     padding: 5,

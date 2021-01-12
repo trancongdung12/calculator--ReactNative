@@ -3,30 +3,6 @@ import React, { useState } from 'react';
 import { TextInput, TouchableOpacity, View, Image, StyleSheet, FlatList } from 'react-native';
 import plus from '../assets/add.png';
 import Item from '../components/TodoList/Item.js';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-
-const todoState = {
-  todo: [],
-};
-const reducer = (state = todoState, action) => {
-  switch (action.type) {
-    case 'SELECT_TODO':
-      return state.map((todo) => todo.id === action.id && { ...todo, isSelect: !todo.isSelect });
-    case 'ADD_TODO':
-      return [
-        ...state,
-        {
-          id: action.id,
-          text: action.text,
-          isSelect: false,
-        },
-      ];
-    default:
-      return state;
-  }
-};
-const store = createStore(reducer);
 
 const TodoList = () => {
   const [textTodo, setTextTodo] = useState('');
@@ -102,7 +78,7 @@ const styles = StyleSheet.create({
   inputTodo: {
     borderColor: 'gray',
     borderWidth: 1,
-    width: 350,
+    width: 320,
     borderRadius: 5,
     paddingStart: 10,
     fontSize: 20,
