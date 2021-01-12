@@ -2,7 +2,7 @@
  * @format
  */
 import { Navigation } from 'react-native-navigation';
-import App from './components/SignUp/Redux/reducer';
+import App from './src/App';
 
 Navigation.registerComponent('com.myApp.WelcomeScreen', () => App);
 // Navigation.events().registerAppLaunchedListener(() => {

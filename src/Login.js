@@ -18,22 +18,16 @@ import { Navigation } from 'react-native-navigation';
 import SignUp from './SignUp';
 import axios from 'react-native-axios';
 import HomePage from './EnouvoEvent';
-import { connect, useDispatch } from 'react-redux';
-import Reducer from '../components/SignUp/Redux/reducer';
-
+import { useDispatch, useSelector } from 'react-redux';
 const Login = (props) => {
-  console.log('voooo',Reducer);
+  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-const dispatch = useDispatch()
-
-const startLoading=()=>{
-  // dispatch(Reducer.)
-  //https://github.com/Nam-Dang-Dev/React-Native-TheBooks
-}
+  const dispatch = useDispatch();
+  const isLoading = useSelector(state => state.loginReducer.loading)
 
   const onHandleLogin = () => {
-    () => props.loading();
+    () => dispatch({ type: 'LOADING' });
     let url = 'https://proxibox-pharma-api-staging.enouvo.com/api/v1/auth/login';
     let data = {
       email: username,
@@ -48,13 +42,11 @@ const startLoading=()=>{
       .then(function (response) {
         console.log(response);
         console.log(response.status);
-        () => props.clearLoading();
         if (response.status === 200) {
           RedirectHomePage();
         }
       })
       .catch(function (error) {
-        () => props.clearLoading();
         Alert.alert('Error', error.response.data.messageCode);
       });
   };
@@ -78,6 +70,7 @@ const startLoading=()=>{
     });
   };
   return (
+
     <ScrollView style={styles.container}>
       <View style={styles.layoutTitle}>
         <Image style={styles.closeImage} source={closeImg} />
@@ -122,17 +115,6 @@ const startLoading=()=>{
     </ScrollView>
   );
 };
-
-// const mapDispatch = (dispatch) => {
-//   return {
-//     loading: () => dispatch({ type: 'LOADING' }),
-//     clearLoading: () => dispatch({ type: 'CLEAR_LOADING' }),
-//   };
-// };
-// const mapState = (state) => {
-//   console.log(state);
-//   return { isLoading: state.loading };
-// };
 export default Login;
 
 const styles = StyleSheet.create({
